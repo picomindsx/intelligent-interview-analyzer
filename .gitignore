@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.log
+*.egg-info/
+.env
+
+# Virtual environments
+venv/
+ENV/
+.venv/
+
+# FastAPI / Uvicorn
+*.db
+*.sqlite
+
+# Hugging Face / PyTorch caches
+.cache/
+~/.cache/
+~/.huggingface/
+~/.torch/
+*.pt
+*.bin
+
+# Audio files (don’t track user uploads)
+*.wav
+*.mp3
+*.flac
+uploads/
+tmp/
+
+# Docker
+*.pid
+*.tar
+*.log
+.dockerignore
+docker-compose.override.yml
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE files
+.vscode/
+.idea/
+*.swp
