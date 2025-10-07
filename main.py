@@ -20,7 +20,7 @@ AUDIO_FILE = "audio.m4a"
 MODEL_SIZE = "medium"  # tiny, base, small, medium, large-v2, large-v3
 LANGUAGE = "en"  # Use language code: en, es, fr, etc.
 HF_TOKEN = os.getenv("HF_TOKEN")
-OUTPUT_FILE = f"transcription_with_speakers_{MODEL_SIZE}_split_text.json"
+OUTPUT_FILE = f"transcription_{MODEL_SIZE}.json"
 
 # Optimization settings
 COMPUTE_TYPE = "int8"  # int8 (fastest), float16, float32
