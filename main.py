@@ -13,7 +13,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-from gemini import get_diarization
+from gemini import get_diarization, get_questions_and_answers
 
 # -------- CONFIG --------
 AUDIO_FILE = "audio.m4a"
@@ -104,6 +104,22 @@ print(f"🎵 Detected language: {info.language} (probability: {info.language_pro
 t3 = time.time()
 out = get_diarization(transcription)
 print(f"✅ Diarization complete in {time.time() - t3:.2f}s")
+
+# ---------------------------------
+# STEP 5: Extract Q&A pairs
+# ---------------------------------
+t4 = time.time()
+print("\n💬 Extracting question–answer pairs using Gemini...")
+qa_output = get_questions_and_answers(transcription)
+print(f"✅ Q&A extraction complete in {time.time() - t4:.2f}s")
+
+# Save Q&A output separately
+qa_output_file = "qa_pairs.json"
+with open(qa_output_file, "w") as f:
+    json.dump(qa_output, f, indent=2)
+
+print(json.dumps(qa_output[:5], indent=2))
+print(f"💾 Q&A saved to {qa_output_file}")
 
 
 # ---------------------------------

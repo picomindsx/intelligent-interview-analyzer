@@ -54,3 +54,39 @@ def get_diarization(transcript: str):
 
     print(json.dumps(data, indent=2))
     return data
+
+def get_questions_and_answers(transcript: str):
+    """
+    Extracts structured Q&A pairs from an interview transcript.
+    Returns [{"question": "...", "answer": "..."}].
+    """
+
+    prompt = f"""
+    You are a transcript analyzer.
+    Identify the QUESTIONS and corresponding ANSWERS from the following transcript.
+    Assume "Speaker A" is the interviewer and "Speaker B" is the interviewee unless context clearly shows otherwise.
+    
+    Output ONLY valid JSON in this format:
+    [
+      {{ "question": "What inspired you to start this project?", "answer": "I was always passionate about sustainability..." }},
+      {{ "question": "How long did it take to complete?", "answer": "Around six months." }}
+    ]
+
+    Transcript:
+    {transcript}
+    """
+
+    model = genai.GenerativeModel("gemini-2.5-flash")
+    response = model.generate_content(prompt)
+    result = response.text.strip()
+
+    # Extract valid JSON
+    try:
+        data = json.loads(result)
+    except json.JSONDecodeError:
+        start = result.find("[")
+        end = result.rfind("]") + 1
+        data = json.loads(result[start:end])
+
+    print(json.dumps(data, indent=2))
+    return data
