@@ -1,34 +1,154 @@
 [
   {
-    "question": "highest level of education that you've completed so far.",
-    "answer": "I think 10th grade 10th Something like that."
+    "question": "What's your full name?",
+    "answer": "Okay."
   },
   {
-    "question": "When you were in school, what do you remember as being the biggest challenge that you had?",
-    "answer": "math and science"
+    "question": "What's your date of birth?",
+    "answer": "Yeah, okay."
   },
   {
-    "question": "Was there any challenges outside of the academic side of it?",
-    "answer": "my criminal record"
+    "question": "Do you have a phone number?",
+    "answer": "Yes."
   },
   {
-    "question": "say more",
-    "answer": "So I was constantly in and out of jail, okay I've been to County six times. Okay DJ J program like the six month to two-year program four times"
+    "question": "What would that be?",
+    "answer": "904 654 5569"
   },
   {
-    "question": "What do you think was the reason why there was so many instances?",
-    "answer": "What do you think my family? yes my cousins my brothers they all they bang so it's like I was adopted into a Into a Haitian family. Mmm. It's like they're very physical. Yeah, and they Almost all of them are in jail for life right now. because of dumb choices and you're here so that's so I'm taking this as a opportunity not a Something to play with"
+    "question": "Is there a good email address?",
+    "answer": "3038 9763"
   },
   {
-    "question": "Do you want to go back to high school? Do you want to go get your GED?",
-    "answer": "I do I would go back to high school, but I don't know if they'll even take me I have four credits out of all of Time I was supposed to be in high school. Okay, because I literally went for like Out of all high school out of two years ninth and 10th grade. I probably went like Three weeks out of the whole two years. Okay"
+    "question": "Do you have an emergency contact?",
+    "answer": "Jonathan green"
   },
   {
-    "question": "do you want high school or do you prefer to get your GED?",
-    "answer": "I would rather have high school But right now somebody told me GED and regular high school diploma doesn't look different, but I feel like if you were to go into a high-end job interview, whatever and They say oh do you have your high school diploma set and you say no I have my GED Maybe People yeah, possibly. I don't know. I just as long as I can get it. I really don't care I just need a high school diploma because that's the gateway to success."
+    "question": "What's your highest education level?",
+    "answer": "Yeah, I did. I would say okay, that's when I stopped going to school."
   },
   {
-    "question": "how far do you think you are away from actually being able to get that high school diploma? What do you think honestly?",
-    "answer": "I? Don't think that far because I don't know if you know what literacy alliances It's a like GD high school program Whatever here in Jacksonville and I went there and took the test for both of the things you have to have required To take the GD test I passed both of them. So okay So not far. Yeah, not far, but I'm letting say I'm ready."
+    "question": "Did you finish out the 9th grade or like somewhere in between?",
+    "answer": "I finished 9th grade."
+  },
+  {
+    "question": "Have you been back at any school place?",
+    "answer": "Okay, okay."
+  },
+  {
+    "question": "What was your biggest challenge at school? Was it hard to take tests, was it hard to make friends?",
+    "answer": "I would say reading is probably the hardest reading for me."
+  },
+  {
+    "question": "Do you want to achieve your GED or high school diploma?",
+    "answer": "Yes."
+  },
+  {
+    "question": "How far away from that do you think you are?",
+    "answer": "My high school was close to my high school diploma, but I was like because I got kicked out of school. So I guess I'm gonna do my GED though."
+  },
+  {
+    "question": "Do you feel like you need tutoring, or do you think if you study you'll be able to take the test?",
+    "answer": "I know my math, but science, history and all them I have to do studying for all them."
+  },
+  {
+    "question": "Would you prefer to study for your GED at the house?",
+    "answer": "I can study 'cause I got my laptop. Only thing I would need is just like books or something sent to me to study for at the house. I can get it done quicker."
+  },
+  {
+    "question": "What are some of your hobbies or things you love to do?",
+    "answer": "I can say sports."
+  },
+  {
+    "question": "What did you come here for today?",
+    "answer": "Okay."
+  },
+  {
+    "question": "When does your home school begin?",
+    "answer": "I used to not come school. I was pretty much doing stuff like with me and my people, my friends and stuff."
+  },
+  {
+    "question": "How long has it been from when you haven't gone to school?",
+    "answer": "Okay, perfect."
+  },
+  {
+    "question": "What are your first thoughts about the opportunity projects?",
+    "answer": "I can say they are cool."
+  },
+  {
+    "question": "Do you have career goals or a dream?",
+    "answer": "To attend, or like to see it. Go there and attend (college)."
+  },
+  {
+    "question": "Have you seen your sister recently?",
+    "answer": "Yes."
+  },
+  {
+    "question": "How likely do you think you will achieve this goal?",
+    "answer": "You gotta keep working your way there. Don't stop."
+  },
+  {
+    "question": "On a scale of one to five, what do you think?",
+    "answer": "Perfect."
+  },
+  {
+    "question": "Do you know the steps to get there?",
+    "answer": "Yes."
+  },
+  {
+    "question": "What's your game plan of what the steps are to get there?",
+    "answer": "Either high school diploma. I want to go back in person. But if I can't, I will take my own GED."
+  },
+  {
+    "question": "What do you want to achieve in the next three weeks with this program?",
+    "answer": "I can say it gets social skills. I need to do something like math, some social studies, and science."
+  },
+  {
+    "question": "What challenges can we help you break down?",
+    "answer": "Some reading, then some social studies."
+  },
+  {
+    "question": "Is trying to see what the process would be for going back into high school or applying to college a challenge?",
+    "answer": "Yeah, I'd say this. For the process."
+  },
+  {
+    "question": "Would you want a plan of what the steps would be and what resources you could take/get?",
+    "answer": "Resources I could take, resources I can get to see how far I could be [from my goal]."
+  },
+  {
+    "question": "Do you have any other challenges in figuring out what you need to help with high school and college?",
+    "answer": "Yeah, okay."
+  },
+  {
+    "question": "Do you have reliable transportation to attend this program and other commitments?",
+    "answer": "Yes."
+  },
+  {
+    "question": "Are there financial challenges that might make it hard for you to focus on your goals?",
+    "answer": "No."
+  },
+  {
+    "question": "How do you learn best? Visuals, working in a group, or just listening to someone talk?",
+    "answer": "Listening, okay."
+  },
+  {
+    "question": "Have you ever worked a job before?",
+    "answer": "Yes."
+  },
+  {
+    "question": "What kind of work was it?",
+    "answer": "Okay."
+  },
+  {
+    "question": "What were you kind of doing with that?",
+    "answer": "To sell stuff. You gotta have a smile on your face, you have to be greeting him nice. We are selling waters for their company."
+  },
+  {
+    "question": "What did you learn from it?",
+    "answer": "To sell anything, you can't just go up to somebody. You gotta have a smile on your face. You have to be greeting him nice. Anybody doesn't generally be nice. Come up to him say, 'hey, how you doing?'"
+  },
+  {
+    "question": "How do you feel?",
+    "answer": "Okay."
   }
 ]

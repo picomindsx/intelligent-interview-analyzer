@@ -13,10 +13,18 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-from gemini import get_diarization, get_questions_and_answers
+from gemini_client import (
+    get_diarization, 
+    get_questions_and_answers, 
+    get_summary,
+    extract_common_question_answers
+    )
 
 # -------- CONFIG --------
-AUDIO_FILE = "audio.m4a"
+# AUDIO_FILE = "audio.m4a"
+# AUDIO_FILE = "Addy intake interview.m4a"
+# AUDIO_FILE = "Aaron Allen TOP Intake.m4a"
+AUDIO_FILE = "Anakin intake.m4a"
 MODEL_SIZE = "medium"  # tiny, base, small, medium, large-v2, large-v3
 LANGUAGE = "en"  # Use language code: en, es, fr, etc.
 HF_TOKEN = os.getenv("HF_TOKEN")
@@ -92,7 +100,7 @@ for segment in segments_iter:
     })
     transcription += segment.text
 
-print(transcription)
+# print(transcription)
 
 print(f"✅ Transcription complete in {time.time() - t2:.2f}s")
 print(f"📄 Total segments: {len(segments_list)}")
@@ -120,6 +128,18 @@ with open(qa_output_file, "w") as f:
 
 print(json.dumps(qa_output[:5], indent=2))
 print(f"💾 Q&A saved to {qa_output_file}")
+
+# ---------------------------------
+# STEP 5B: Extract Common Question Answers
+# ---------------------------------
+print("\n🔍 Extracting common question answers...")
+common_answers = extract_common_question_answers(transcription)
+
+common_answers_file = "common_question_answers.json"
+with open(common_answers_file, "w") as f:
+    json.dump(common_answers, f, indent=2)
+
+print(f"💾 Common question answers saved to {common_answers_file}")
 
 
 # ---------------------------------
