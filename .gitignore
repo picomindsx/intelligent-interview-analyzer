@@ -13,9 +13,6 @@ venv/
 ENV/
 .venv/
 
-# FastAPI / Uvicorn
-*.db
-*.sqlite
 
 # Hugging Face / PyTorch caches
 .cache/

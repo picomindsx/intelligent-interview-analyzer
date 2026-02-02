@@ -5,8 +5,6 @@ import os
 # Load Gemini API key from environment
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-print(f"🔑 {GEMINI_API_KEY}")
-
 if not GEMINI_API_KEY:
     raise EnvironmentError("Please set GEMINI_API_KEY as an environment variable.")
 

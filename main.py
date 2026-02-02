@@ -7,28 +7,32 @@ from pyannote.audio import Pipeline
 import warnings
 import json
 warnings.filterwarnings("ignore")
+from db import InterviewDB
 
 import os
 
 from dotenv import load_dotenv
 load_dotenv()
 
+# Initialize DB
+db = InterviewDB("interview_analyzer.db")
+
 from gemini_client import (
     get_diarization, 
     get_questions_and_answers, 
     get_summary,
-    extract_common_question_answers
+    extract_common_question_answers,
+    generate_overall_summary
     )
 
 # -------- CONFIG --------
 # AUDIO_FILE = "audio.m4a"
 # AUDIO_FILE = "Addy intake interview.m4a"
 # AUDIO_FILE = "Aaron Allen TOP Intake.m4a"
-AUDIO_FILE = "Anakin intake.m4a"
-MODEL_SIZE = "medium"  # tiny, base, small, medium, large-v2, large-v3
+AUDIO_FILE = "audio.m4a"
+MODEL_SIZE = "tiny"  # tiny, base, small, medium, large-v2, large-v3
 LANGUAGE = "en"  # Use language code: en, es, fr, etc.
 HF_TOKEN = os.getenv("HF_TOKEN")
-OUTPUT_FILE = f"transcription_{MODEL_SIZE}.json"
 
 # Optimization settings
 COMPUTE_TYPE = "int8"  # int8 (fastest), float16, float32
@@ -121,26 +125,11 @@ print("\n💬 Extracting question–answer pairs using Gemini...")
 qa_output = get_questions_and_answers(transcription)
 print(f"✅ Q&A extraction complete in {time.time() - t4:.2f}s")
 
-# Save Q&A output separately
-qa_output_file = "qa_pairs.json"
-with open(qa_output_file, "w") as f:
-    json.dump(qa_output, f, indent=2)
-
-print(json.dumps(qa_output[:5], indent=2))
-print(f"💾 Q&A saved to {qa_output_file}")
-
 # ---------------------------------
 # STEP 5B: Extract Common Question Answers
 # ---------------------------------
 print("\n🔍 Extracting common question answers...")
 common_answers = extract_common_question_answers(transcription)
-
-common_answers_file = "common_question_answers.json"
-with open(common_answers_file, "w") as f:
-    json.dump(common_answers, f, indent=2)
-
-print(f"💾 Common question answers saved to {common_answers_file}")
-
 
 # ---------------------------------
 # STEP 6: Save transcript with timestamps
@@ -148,17 +137,15 @@ print(f"💾 Common question answers saved to {common_answers_file}")
 t5 = time.time()
 print("\n💾 Saving transcript...")
 
-with open(OUTPUT_FILE, "w") as f:
-    json.dump(out, f, indent=2)
-
-print(json.dumps(out[:5], indent=2))
-print(f"✅ Transcript saved in {time.time() - t5:.2f}s")
-
 # ---------------------------------
 # STEP 7: Summary
 # ---------------------------------
 total_time = time.time() - start_all
 audio_duration = segments_list[-1]["end"] if segments_list else 0
+
+summary = generate_overall_summary(segments_iter, qa_output)
+
+db.save_interview_results(AUDIO_FILE, summary, qa_output, common_answers)
 
 print("\n📊 -------- PERFORMANCE SUMMARY --------")
 print(f"Audio duration:       {format_time(audio_duration)}")
@@ -172,4 +159,5 @@ print(f"🕒 TOTAL TIME: {total_time:.2f}s")
 if audio_duration > 0:
     print(f"⚡ Speed factor: {audio_duration/total_time:.2f}x realtime")
 print("----------------------------------------")
-print(f"✅ Complete! Transcript saved to '{OUTPUT_FILE}'")
+print("✅ Complete!")
+
