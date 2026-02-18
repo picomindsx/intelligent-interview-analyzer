@@ -22,6 +22,8 @@ from gemini_client import (
     get_questions_and_answers, 
     get_summary,
     extract_common_question_answers,
+    get_questions_and_answers_as_summary, 
+    extract_common_question_answers_as_summary,
     generate_overall_summary
     )
 
@@ -122,14 +124,17 @@ print(f"✅ Diarization complete in {time.time() - t3:.2f}s")
 # ---------------------------------
 t4 = time.time()
 print("\n💬 Extracting question–answer pairs using Gemini...")
-qa_output = get_questions_and_answers(transcription)
+qa_output = get_questions_and_answers_as_summary(transcription)
 print(f"✅ Q&A extraction complete in {time.time() - t4:.2f}s")
+print("\n📋 Extracted Q&A Pairs:", qa_output)
 
 # ---------------------------------
 # STEP 5B: Extract Common Question Answers
 # ---------------------------------
 print("\n🔍 Extracting common question answers...")
-common_answers = extract_common_question_answers(transcription)
+common_answers = extract_common_question_answers_as_summary(transcription)
+print(f"✅ Common question extraction complete in {time.time() - t4:.2f}s")
+print("\n📋 Common Question Answers:", common_answers)
 
 # ---------------------------------
 # STEP 6: Save transcript with timestamps
