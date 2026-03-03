@@ -53,6 +53,48 @@ class InterviewDB:
 
         self.conn.commit()
         print(f"✅ Saved Interview {interview_id}: {len(gen_rows)} general and {len(com_rows)} common pairs.")
-        
+
+    def save_interview_results_safe(self, filename=None, summary=None, qa_general=None, qa_common=None):
+        cursor = self.conn.cursor()
+
+        # Insert interview record
+        cursor.execute(
+            "INSERT INTO interviews (filename, summary) VALUES (?, ?)",
+            (filename or "unknown", summary or "")
+        )
+        interview_id = cursor.lastrowid
+
+        # Insert General Q&A if available
+        if qa_general:
+            gen_rows = [
+                (interview_id, q.get('question', ''), q.get('answer', ''))
+                for q in qa_general
+                if q.get('question') and q.get('answer')
+            ]
+
+            if gen_rows:
+                cursor.executemany(
+                    "INSERT INTO qa_general (interview_id, question, answer) VALUES (?,?,?)",
+                    gen_rows
+                )
+
+        # Insert Common Q&A if available
+        if qa_common:
+            com_rows = [
+                (interview_id, q.get('question', ''), q.get('answer', ''))
+                for q in qa_common
+                if q.get('question') and q.get('answer')
+            ]
+
+            if com_rows:
+                cursor.executemany(
+                    "INSERT INTO qa_common (interview_id, question, answer) VALUES (?,?,?)",
+                    com_rows
+                )
+
+        self.conn.commit()
+
+        print(f"✅ Saved Interview {interview_id}")
+
     def close(self):
         self.conn.close()

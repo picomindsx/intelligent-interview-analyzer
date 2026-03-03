@@ -150,6 +150,26 @@ def generate_overall_summary(speaker_segments, qna_pairs):
 
     return get_summary(prompt)
 
+def generate_overall_summary_text(transcript: str, qna_pairs):
+    full_text = transcript
+
+    prompt = f"""
+    Summarize the following meeting transcript in a clear and concise way.
+    Mention:
+    - What the meeting was about
+    - Main topics discussed
+    - Key decisions or outcomes
+    - Any follow-ups or next steps if mentioned
+
+    Transcript:
+    {full_text}
+
+    Questions and Answers:
+    {json.dumps(qna_pairs, indent=2)}
+    """
+
+    return get_summary(prompt)
+
 # ------------------------------------------------------
 # HELPER FUNCTION: get_summary
 # ------------------------------------------------------
