@@ -1,7 +1,7 @@
 import datetime
 import time
-import warnings
-warnings.filterwarnings("ignore")
+import argparse
+import logging
 
 import os
 from dotenv import load_dotenv
@@ -14,78 +14,87 @@ from gemini_client import (
     generate_overall_summary_text
 )
 
-# ---------------------------------
-# INIT
-# ---------------------------------
-db = InterviewDB("interview_analyzer.db")
-start_all = time.time()
+logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
+logger = logging.getLogger(__name__)
 
 def format_time(secs):
     return str(datetime.timedelta(seconds=round(secs)))
 
-# ---------------------------------
-# LOAD TRANSCRIPTION
-# ---------------------------------
-TRANSCRIPT_FILE = "Aaron_Allen_TOP_Intake.transcript.txt"
+def validate_qa_pairs(qa_items):
+    valid_items = []
+    for item in qa_items or []:
+        if not isinstance(item, dict):
+            continue
+        question = (item.get("question") or "").strip()
+        answer = (item.get("answer") or "").strip()
+        if question and answer:
+            valid_items.append({"question": question, "answer": answer})
+    return valid_items
 
-if not os.path.exists(TRANSCRIPT_FILE):
-    raise FileNotFoundError(f"{TRANSCRIPT_FILE} not found")
 
-with open(TRANSCRIPT_FILE, "r", encoding="utf-8") as f:
-    transcription = f.read().strip()
+def parse_args():
+    parser = argparse.ArgumentParser(description="Generate interview summary and save it to DB.")
+    parser.add_argument(
+        "--transcript",
+        default=os.getenv("TRANSCRIPT_FILE", "Aaron_Allen_TOP_Intake.transcript.txt"),
+        help="Path to transcript text file",
+    )
+    return parser.parse_args()
 
-if not transcription:
-    raise ValueError("Transcription file is empty")
 
-print("\n📄 Transcription loaded successfully.")
+def main():
+    args = parse_args()
+    db = InterviewDB("interview_analyzer.db")
+    start_all = time.perf_counter()
 
-# ---------------------------------
-# STEP 1: Extract General Q&A
-# ---------------------------------
-t1 = time.time()
-print("\n💬 Extracting question–answer pairs...")
-qa_output = get_questions_and_answers_as_summary(transcription) or []
-print(f"✅ Q&A extraction complete in {time.time() - t1:.2f}s")
+    try:
+        transcript_file = args.transcript
+        if not os.path.exists(transcript_file):
+            raise FileNotFoundError(f"{transcript_file} not found")
 
-# ---------------------------------
-# STEP 2: Extract Common Q&A
-# ---------------------------------
-t2 = time.time()
-print("\n🔍 Extracting common question answers...")
-common_answers = extract_common_question_answers_as_summary(transcription) or []
-print(f"✅ Common question extraction complete in {time.time() - t2:.2f}s")
+        with open(transcript_file, "r", encoding="utf-8") as f:
+            transcription = f.read().strip()
 
-# ---------------------------------
-# STEP 3: Generate Overall Summary
-# ---------------------------------
-t3 = time.time()
-print("\n🧠 Generating overall summary...")
-summary = generate_overall_summary_text(transcription, qa_output)
-print(f"✅ Summary generated in {time.time() - t3:.2f}s")
+        if not transcription:
+            raise ValueError("Transcription file is empty")
 
-# ---------------------------------
-# STEP 4: Save to DB
-# ---------------------------------
-t4 = time.time()
-print("\n💾 Saving results to database...")
+        logger.info("Transcription loaded successfully from %s", transcript_file)
 
-db.save_interview_results_safe(
-    filename=TRANSCRIPT_FILE,
-    summary=summary,
-    qa_general=qa_output,
-    qa_common=common_answers
-)
+        t1 = time.perf_counter()
+        logger.info("Extracting question-answer pairs...")
+        qa_output = validate_qa_pairs(get_questions_and_answers_as_summary(transcription) or [])
+        logger.info("Q&A extraction complete in %.2fs", time.perf_counter() - t1)
 
-print(f"✅ Saved in {time.time() - t4:.2f}s")
+        t2 = time.perf_counter()
+        logger.info("Extracting common question answers...")
+        common_answers = validate_qa_pairs(
+            extract_common_question_answers_as_summary(transcription) or []
+        )
+        logger.info("Common question extraction complete in %.2fs", time.perf_counter() - t2)
 
-# ---------------------------------
-# PERFORMANCE SUMMARY
-# ---------------------------------
-total_time = time.time() - start_all
+        t3 = time.perf_counter()
+        logger.info("Generating overall summary...")
+        summary = generate_overall_summary_text(transcription, qa_output)
+        logger.info("Summary generated in %.2fs", time.perf_counter() - t3)
 
-print("\n📊 -------- PERFORMANCE SUMMARY --------")
-print(f"🕒 TOTAL TIME: {total_time:.2f}s")
-print("----------------------------------------")
-print("✅ Complete!")
+        t4 = time.perf_counter()
+        logger.info("Saving results to database...")
+        db.save_interview_results_safe(
+            filename=transcript_file,
+            summary=summary,
+            qa_general=qa_output,
+            qa_common=common_answers,
+        )
+        logger.info("Saved in %.2fs", time.perf_counter() - t4)
 
-db.close()
+        total_time = time.perf_counter() - start_all
+        logger.info("-------- PERFORMANCE SUMMARY --------")
+        logger.info("TOTAL TIME: %.2fs", total_time)
+        logger.info("TOTAL TIME (rounded): %s", format_time(total_time))
+        logger.info("Complete.")
+    finally:
+        db.close()
+
+
+if __name__ == "__main__":
+    main()
